@@ -1,17 +1,27 @@
 
 class Word {
+    Random random=new Random()
+
     String txt
     Word prev, next
-    def others=[]
+    def others=[] as List<Word>
 
     String toString() { "[${prev?.txt}< $txt >${next?.txt}]"}
+    Word getMarkovNext() {
+        others[random.nextInt(others.size())].next
+    }
 }
 
 class Doc {
     def wordAry=[]
 
+    Random random=new Random()
+
     Word getFirst() { wordAry[0] }
     Word getLast() { wordAry[-1] }
+    Word getRandom() { wordAry[random.nextInt(wordAry.size())] }
+
+
 
     Doc(String fileName) {
         File inp=new File(fileName)
@@ -50,4 +60,11 @@ class Doc {
 }
 
 def d=new Doc('data/ch1.txt')
-println "$d.first $d.last"
+//println "$d.first $d.last"
+//[*1..10].each { println d.random }
+
+def w=d.random
+[*1..1000].each {
+    print "$w.txt "
+    w=w.markovNext
+}
