@@ -18,9 +18,7 @@ class Doc {
         File inp=new File(fileName)
 
         def ary = inp.getText().split(/\s+/).findAll { it =~ /\w/ }
-                .collect {
-            ((it =~ /\w'\w/) ? it.replaceAll(/^\W|\W$/, '') : it.replaceAll(/\W/, '')).toLowerCase()
-        }
+                .collect { it.replaceAll(/^\W+|\W+$/, '').toLowerCase() }
 
         Word last = null
         def map = [:]

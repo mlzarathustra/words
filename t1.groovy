@@ -5,9 +5,9 @@ println "first: $d.first last: $d.last"
 println '\nrandom t1:'
 [*1..10].each { println d.random }
 
-println '\nMarkov walk:'
+println '\nOne-Hop walk (matching only the next word):'
 def w=d.random
 [*1..500].each {
     print "$w.txt "
-    w=w.markovNext
+    w=w.oneHopNext
 }
