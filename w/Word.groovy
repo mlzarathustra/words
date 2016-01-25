@@ -2,33 +2,31 @@ package w
 
 class Word {
     Random random=new Random()
+    boolean D=false
 
     String txt
     Word prev, next
     def others=[] as List<Word>
+    def possibleNext=[] as List<Word> // accounting for chain
 
-    String prevKey, nextKey
+    String key
 
     String toString() { "[${prev?.txt}< $txt >${next?.txt}]"}
     Word getOneHopNext() {
         others[random.nextInt(others.size())].next
     }
 
-    // prevKey - drops last word. nextKey - drops 1st word
-    void setUpKeys() {
-        String fullKey=Chain.toString(this,Common.chainLength).trim()
-        prevKey = fullKey.replaceFirst(/\s+\w+$/,'')
-        nextKey = fullKey.replaceFirst(/^\w+\s+/,'')
-        println fullKey
-        println "   prev: $prevKey"
-        println "   next: $nextKey"
+    String getKey() {
+        if (key==null) {
+            key = Chain.toString(this, Common.chainLength).trim()
+        }
+        key
     }
-
 
     Word getChainedNext() {
-        if (prevKey==null) setUpKeys()
-        null
+        if (!possibleNext) {
+            possibleNext = others.findAll { w-> key == w.key }
+        }
+        return possibleNext[random.nextInt(possibleNext.size())].next
     }
-
-
 }
